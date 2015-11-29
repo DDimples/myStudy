@@ -18,6 +18,14 @@
                 <SizeBasedTriggeringPolicy size="50 MB"/>
             </Policies>
         </RollingFile>
+        <RollingFile name="CheckListLog" fileName="/Users/chengxiang/workStation/logs/CheckListLog.log"
+                     filePattern="/Users/chengxiang/workStation/logs/CheckListLog.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout charset="UTF-8" pattern="%date{yyyy-MM-dd HH:mm:ss.SSS}    %level  %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true" />
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+        </RollingFile>
 
         <RollingFile name="test" fileName="/Users/chengxiang/workStation/logs/sql.log"
                      filePattern="/Users/chengxiang/workStation/logs/sql.%d{yyyy-MM-dd-HH}.log">
@@ -33,6 +41,9 @@
 
         <logger name="CommonLogger" level="debug">
             <appender-ref ref="CommonLog"/>
+        </logger>
+        <logger name="CheckListLogger" level="debug">
+            <appender-ref ref="CheckListLog"/>
         </logger>
         <logger name="TestLogger" level="debug">
             <appender-ref ref="test"/>

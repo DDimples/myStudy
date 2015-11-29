@@ -58,23 +58,23 @@ public class LogWrapper implements Logger {
     }
 
     public void trace(Marker marker, String msg) {
-
+        logger.trace(marker,msg);
     }
 
     public void trace(Marker marker, String format, Object arg) {
-
+        logger.trace(marker,format,arg);
     }
 
     public void trace(Marker marker, String format, Object arg1, Object arg2) {
-
+        logger.trace(marker,format,arg1,arg2);
     }
 
     public void trace(Marker marker, String format, Object... argArray) {
-
+        logger.trace(marker,format,argArray);
     }
 
     public void trace(Marker marker, String msg, Throwable t) {
-
+        logger.trace(marker,msg,t);
     }
 
     public boolean isDebugEnabled() {
@@ -118,11 +118,11 @@ public class LogWrapper implements Logger {
     }
 
     public void debug(Marker marker, String format, Object... arguments) {
-
+        logger.debug(marker,format,arguments);
     }
 
     public void debug(Marker marker, String msg, Throwable t) {
-
+        logger.debug(marker,msg,t);
     }
 
     public boolean isInfoEnabled() {
@@ -154,75 +154,75 @@ public class LogWrapper implements Logger {
     }
 
     public void info(Marker marker, String msg) {
-
+        logger.info(marker,msg);
     }
 
     public void info(Marker marker, String format, Object arg) {
-
+        logger.info(marker,format,arg);
     }
 
     public void info(Marker marker, String format, Object arg1, Object arg2) {
-
+        logger.info(marker,format,arg1,arg2);
     }
 
     public void info(Marker marker, String format, Object... arguments) {
-
+        logger.info(marker,format,arguments);
     }
 
     public void info(Marker marker, String msg, Throwable t) {
-
+        logger.info(marker,msg,t);
     }
 
     public boolean isWarnEnabled() {
-        return false;
+        return logger.isWarnEnabled();
     }
 
     public void warn(String msg) {
-
+        logger.warn(msg);
     }
 
     public void warn(String format, Object arg) {
-
+        logger.warn(format,arg);
     }
 
     public void warn(String format, Object... arguments) {
-
+        logger.warn(format,arguments);
     }
 
     public void warn(String format, Object arg1, Object arg2) {
-
+        logger.warn(format,arg1,arg2);
     }
 
     public void warn(String msg, Throwable t) {
-
+        logger.warn(msg,t);
     }
 
     public boolean isWarnEnabled(Marker marker) {
-        return false;
+        return logger.isWarnEnabled(marker);
     }
 
     public void warn(Marker marker, String msg) {
-
+        logger.warn(marker,msg);
     }
 
     public void warn(Marker marker, String format, Object arg) {
-
+        logger.warn(marker,format,arg);
     }
 
     public void warn(Marker marker, String format, Object arg1, Object arg2) {
-
+        logger.warn(marker,format,arg1,arg2);
     }
 
     public void warn(Marker marker, String format, Object... arguments) {
-
+        logger.warn(marker,format,arguments);
     }
 
     public void warn(Marker marker, String msg, Throwable t) {
-
+        logger.warn(marker,msg,t);
     }
 
     public boolean isErrorEnabled() {
-        return false;
+        return logger.isErrorEnabled();
     }
 
     public void error(String msg) {
@@ -250,22 +250,22 @@ public class LogWrapper implements Logger {
     }
 
     public void error(Marker marker, String msg) {
-
+        logger.error(marker,msg);
     }
 
     public void error(Marker marker, String format, Object arg) {
-
+        logger.error(marker,format,arg);
     }
 
     public void error(Marker marker, String format, Object arg1, Object arg2) {
-
+        logger.error(marker,format,arg1,arg2);
     }
 
     public void error(Marker marker, String format, Object... arguments) {
-
+        logger.error(marker,format,arguments);
     }
 
     public void error(Marker marker, String msg, Throwable t) {
-
+        logger.error(marker,msg,t);
     }
 }

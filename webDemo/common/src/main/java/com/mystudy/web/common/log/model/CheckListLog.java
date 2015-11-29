@@ -1,50 +1,14 @@
-package com.mystudy.web.common.log;
+package com.mystudy.web.common.log.model;
 
-import java.io.Serializable;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.regex.Pattern;
 
 /**
- * Created by 程祥 on 15/11/27.
- * Function：日志信息model
+ * Created by 程祥 on 15/11/29.
+ * Function：
  */
-public class LogInfo implements Cloneable, Serializable{
-    public static final char TAB = '\t';
-    public static final char ENTER = '\n';
-
-
-    /**
-     * 跟踪ID（用于跟踪用户的一次请求流程）
-     */
-    private String traceId;
-    /**
-     * 服务器名
-     */
-    private String serverName;
-    /**
-     * 服务器IP
-     */
-    private String serverIp;
-    /**
-     * 业务线分支名称
-     */
-    private String appName;
-    /**
-     * 日志类型 现在位运算只支持3位（1代表是、0代表否）， 右数第一位为代表计算进日志系统（mongodb中保存时间14天）
-     * 右数第二位为代表计算进入checklist 右数第三位为代表计算hadoop日志 的pv和uv日志
-     */
-    private String logType;
-    /**
-     * 页面url地址
-     */
-    private String pageUrl;
-    /**
-     * 查询串
-     */
-    private String queryString;
-    /**
-     * 调用服务接口的名称（可以使地址，action名称）
-     */
-    private String serviceName;
-
+public class CheckListLog extends AbstractLogInfo{
     /**
      * 日志记录时间（格式：yyyy-MM-dd HH:mm:ss SSS）
      */
@@ -117,14 +81,6 @@ public class LogInfo implements Cloneable, Serializable{
 
     public void setLogTime(String logTime) {
         this.logTime = logTime;
-    }
-
-    public String getSpan() {
-        return span;
-    }
-
-    public void setSpan(String span) {
-        this.span = span;
     }
 
     public String getUserLogType() {
@@ -207,14 +163,6 @@ public class LogInfo implements Cloneable, Serializable{
         this.hadoopContent = hadoopContent;
     }
 
-    public Throwable getException() {
-        return exception;
-    }
-
-    public void setException(Throwable exception) {
-        this.exception = exception;
-    }
-
     public String getExceptionMsg() {
         return exceptionMsg;
     }
@@ -239,67 +187,52 @@ public class LogInfo implements Cloneable, Serializable{
         this.extend2 = extend2;
     }
 
-    public String getTraceId() {
-        return traceId;
+    public Throwable getException() {
+        return exception;
     }
 
-    public void setTraceId(String traceId) {
-        this.traceId = traceId;
+    public void setException(Throwable exception) {
+        this.exception = exception;
     }
 
-    public String getServerName() {
-        return serverName;
+    public String getSpan() {
+        return span;
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
+    public void setSpan(String span) {
+        this.span = span;
     }
 
-    public String getServerIp() {
-        return serverIp;
-    }
+    protected static final Pattern enter = Pattern.compile("\n");
 
-    public void setServerIp(String serverIp) {
-        this.serverIp = serverIp;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-
-    public String getLogType() {
-        return logType;
-    }
-
-    public void setLogType(String logType) {
-        this.logType = logType;
-    }
-
-    public String getPageUrl() {
-        return pageUrl;
-    }
-
-    public void setPageUrl(String pageUrl) {
-        this.pageUrl = pageUrl;
-    }
-
-    public String getQueryString() {
-        return queryString;
-    }
-
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getAppName()).append(TAB);
+        stringBuilder.append(this.getServiceName()).append(TAB);
+        stringBuilder.append(this.getLogType()).append(TAB);
+        stringBuilder.append(this.getLogTime()).append(TAB);
+        stringBuilder.append(this.getElapsedTime()).append(TAB);
+        stringBuilder.append(this.getBusinessErrorCode()).append(TAB);
+        stringBuilder.append(this.getExceptionMsg()).append(TAB);
+        String exceptionString = null;
+        if(this.getException()!=null){
+            StringWriter sw = new StringWriter(1024);
+            PrintWriter pw = new PrintWriter(sw);
+            exception.printStackTrace(pw);
+            pw = null;
+            StringBuffer ex = sw.getBuffer();
+            sw = null;
+            //替换换行符
+            exceptionString = enter.matcher(ex).replaceAll("#");
+        }
+        stringBuilder.append(exceptionString).append(TAB);
+        stringBuilder.append(this.getResponseBody()).append(TAB);
+        stringBuilder.append(this.getSessionId()).append(TAB);
+        stringBuilder.append(this.getServerIp()).append(TAB);
+        stringBuilder.append(this.getServerName()).append(TAB);
+        stringBuilder.append(this.getPageUrl()).append(TAB);
+        stringBuilder.append(this.getQueryString()).append(TAB);
+        return stringBuilder.toString();
     }
 }
