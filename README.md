@@ -1,8 +1,12 @@
 # 目录
 
 
-> 下周计划：实现一个数据结构，并写出blog
-> 
+> 下周计划：实现一个数据结构，并写出blog,spring 各种注解
+
+http://blog.csdn.net/wdyr321/article/details/17129869
+
+http://blog.csdn.net/walkerjong/article/details/7946109
+
 > 未来计划：前端架构、消息队列、mongoDB、freemarker、MySQL总结、(想到再补充，实现一个划掉一个，一步步来，积累总结)
 
 * [Spring框架中使用Log4j2](http://ddimples.github.io/2015/11/24/log4j/)

@@ -9,12 +9,11 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>model</module>
+        <module>common</module>
+        <module>dao</module>
         <module>service</module>
         <module>web</module>
-        <module>model</module>
-        <module>dao</module>
-        <module>common</module>
     </modules>
-
 
 </project>

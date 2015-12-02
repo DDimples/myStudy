@@ -45,6 +45,7 @@ public class ServiceAop {
         logInfo.setLogType("0001");
         logInfo.setAppName("webDemo");
         logger.debug(logInfo.toString());
+        logger.debug("{} {}","a","a");
         return result;
     }
 
