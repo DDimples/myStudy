@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <beans:bean class="com.mystudy.web.common.SpringContextUtil"/>
+
+
+    <beans:bean id="employee" class="com.mystudy.web.model.Persion">
+        <beans:property name="name" value="employeeId" />
+        <beans:property name="address" value="employeeCode"/>
+        <beans:property name="age" value="100"/>
+        <beans:property name="sex" value="M"/>
+    </beans:bean>
+
+</beans:beans>

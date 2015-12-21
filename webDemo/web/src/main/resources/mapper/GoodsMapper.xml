@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mystudy.web.mapper.GoodsMapper" >
+    <resultMap id="Goods" type="com.mystudy.web.model.Goods" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DOUBLE" />
+        <result column="num" property="num" jdbcType="DOUBLE"/>
+        <result column="ts" property="ts" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="Goods">
+        SELECT id,name,price,num,ts FROM studyTest
+    </select>
+
+    <select id="selectById" resultType="Goods" parameterType="java.lang.String">
+        SELECT id,name,price,num,ts FROM studyTest WHERE id = #{id}
+    </select>
+
+    <insert id="insertGoods" parameterType="java.util.List">
+        INSERT INTO studyTest(id,name,price,num,ts)
+        VALUES
+        <foreach collection="list" item="obj" index="index" separator=",">
+            (#{obj.id},#{obj.name},#{obj.price},#{obj.num},#{obj.ts})
+        </foreach>
+    </insert>
+
+
+</mapper>

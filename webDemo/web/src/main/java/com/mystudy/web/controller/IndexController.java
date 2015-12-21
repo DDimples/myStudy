@@ -1,7 +1,9 @@
 package com.mystudy.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.mystudy.web.common.BaseController;
 import com.mystudy.web.common.log.LogUtil;
+import com.mystudy.web.service.GoodsService;
 import com.mystudy.web.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ public class IndexController extends BaseController {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private GoodsService goodsService;
 
     @RequestMapping(value = "/")
     public ModelAndView index(){
@@ -48,6 +53,12 @@ public class IndexController extends BaseController {
             logger.error(e.getMessage(),e);
         }
         return result;
+    }
+
+    @RequestMapping(value = "/database",produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Object databaseTest() throws Exception{
+        return JSON.toJSONString(goodsService.selectAll());
     }
 
 }

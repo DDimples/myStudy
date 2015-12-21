@@ -4,36 +4,99 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
-       <mvc:annotation-driven />
-       <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:annotation-driven/>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-       <!-- 启动扫描所有的controller -->
-       <context:component-scan base-package="com.mystudy.web"/>
-       <!-- jsp页面解析器，当Controller返回XXX字符串时，先通过拦截器，然后该类就会在/WEB-INF/views/目录下，查找XXX.jsp文件-->
-       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-              <property name="prefix" value="/WEB-INF/views/"></property>
-              <!--<beans:property name="suffix" value=".jsp"></beans:property>-->
-       </bean>
+    <import resource="classpath:/spring-beans-context.xml"/>
+    <!-- 启动扫描所有的controller -->
 
-       <mvc:interceptors>
-              <bean class="com.mystudy.web.common.interceptor.WebContextInterceptor"/>
-       </mvc:interceptors>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <context:component-scan base-package="com.mystudy.web"/>
+    <!-- jsp页面解析器，当Controller返回XXX字符串时，先通过拦截器，然后该类就会在/WEB-INF/views/目录下，查找XXX.jsp文件-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <!--<beans:property name="suffix" value=".jsp"></beans:property>-->
+    </bean>
 
-       <!-- aop start -->
-       <bean id="serviceAop" class="com.mystudy.web.common.aop.ServiceAop"/>
-       <bean id="annotationMultipleDataSourceAdvice" class="com.mystudy.web.common.datasource.impl.AnnotationMultipleDataSourceAdvice"/>
+    <mvc:interceptors>
+        <bean class="com.mystudy.web.common.interceptor.WebContextInterceptor"/>
+    </mvc:interceptors>
 
-       <aop:config>
-              <aop:pointcut id="servicePoint" expression="execution(* com.mystudy.web.service.*.*(..))"/>
-              <aop:advisor advice-ref="annotationMultipleDataSourceAdvice" pointcut-ref="servicePoint"/>
-              <aop:aspect id="aroundMethod" ref="serviceAop">
-                     <aop:around pointcut-ref="servicePoint" method="around"/>
-              </aop:aspect>
-       </aop:config>
+    <!-- 配置数据源 start -->
+    <!-- 公共的数据源配置 -->
+    <util:properties id="dbConfig" location="classpath:/jdbc.properties"></util:properties>
+    <!-- 写入数据源 start -->
+    <bean id="writeDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          lazy-init="default" autowire="default" destroy-method="close">
+        <property name="driverClassName" value="#{dbConfig['write.driver']}"></property>
+        <property name="url" value="#{dbConfig['write.url']}"></property>
+        <property name="username" value="#{dbConfig['write.user']}"></property>
+        <property name="password" value="#{dbConfig['write.password']}"></property>
+        <property name="maxWait" value="#{dbConfig['write.maxWait']}"></property>
+        <property name="testWhileIdle" value="#{dbConfig['write.testWhileIdle']}"></property>
+        <property name="removeAbandoned" value="#{dbConfig['write.removeAbandoned']}"></property>
+        <property name="removeAbandonedTimeout" value="#{dbConfig['write.removeAbandonedTimeout']}"></property>
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="#{dbConfig['write.timeBetweenEvictionRunsMillis']}"></property>
+        <property name="maxActive" value="#{dbConfig['write.maxActive']}"></property>
+        <property name="maxIdle" value="#{dbConfig['write.maxIdle']}"></property>
+    </bean>
+
+    <!-- 读数据源 start -->
+    <bean id="readDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          lazy-init="default" autowire="default" destroy-method="close">
+        <property name="driverClassName" value="#{dbConfig['read.driver']}"></property>
+        <property name="url" value="#{dbConfig['read.url']}"></property>
+        <property name="username" value="#{dbConfig['read.user']}"></property>
+        <property name="password" value="#{dbConfig['read.password']}"></property>
+        <property name="maxWait" value="#{dbConfig['read.maxWait']}"></property>
+        <property name="testWhileIdle" value="#{dbConfig['read.testWhileIdle']}"></property>
+        <property name="removeAbandoned" value="#{dbConfig['read.removeAbandoned']}"></property>
+        <property name="removeAbandonedTimeout" value="#{dbConfig['read.removeAbandonedTimeout']}"></property>
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="#{dbConfig['read.timeBetweenEvictionRunsMillis']}"></property>
+        <property name="maxActive" value="#{dbConfig['read.maxActive']}"></property>
+        <property name="maxIdle" value="#{dbConfig['read.maxIdle']}"></property>
+
+    </bean>
+    <!--end 读数据源 -->
+    <bean id="dataSource" class="com.mystudy.web.common.datasource.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="writeDataSource" value-ref="writeDataSource"/>
+                <entry key="readDataSource" value-ref="readDataSource"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="writeDataSource"/>
+        <property name="defaultDataSourceKey" value="writeDataSource"/>
+    </bean>
+    <!-- aop start -->
+    <bean id="serviceAop" class="com.mystudy.web.common.aop.ServiceAop"/>
+    <bean id="annotationMultipleDataSourceAdvice"
+          class="com.mystudy.web.common.datasource.impl.AnnotationMultipleDataSourceAdvice"/>
+
+    <aop:config>
+        <aop:pointcut id="servicePoint" expression="execution(* com.mystudy.web.service.*.*(..))"/>
+        <aop:advisor advice-ref="annotationMultipleDataSourceAdvice" pointcut-ref="servicePoint"/>
+        <aop:aspect id="aroundMethod" ref="serviceAop">
+            <aop:around pointcut-ref="servicePoint" method="around"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mystudy.web.mapper"/>
+    </bean>
 
 </beans>
