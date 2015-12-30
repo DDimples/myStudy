@@ -3,15 +3,21 @@ package com.mystudy.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.mystudy.web.common.BaseController;
 import com.mystudy.web.common.log.LogUtil;
+import com.mystudy.web.controller.util.MultithreadUtil;
 import com.mystudy.web.service.GoodsService;
 import com.mystudy.web.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Created by 程祥 on 15/11/26.
@@ -60,5 +66,6 @@ public class IndexController extends BaseController {
     public Object databaseTest() throws Exception{
         return JSON.toJSONString(goodsService.selectAll());
     }
+
 
 }

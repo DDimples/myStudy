@@ -1,10 +1,8 @@
 package com.demo.proxy;
 
-import com.demo.proxy.impl.InvokeImpl;
+import com.demo.proxy.impl.ProxySubject;
 import com.demo.proxy.impl.TestServiceImpl;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -15,12 +13,9 @@ public class ProxyTest {
 
     public static void main(String[] args){
         TestService service = new TestServiceImpl();
-        InvokeImpl invoke = new InvokeImpl(service);
-        TestService proxy = (TestService)Proxy.newProxyInstance(ProxyTest.class.getClassLoader(),
-                service.getClass().getInterfaces(),invoke);
+        ProxySubject invoke = new ProxySubject(service);
+        TestService proxy = (TestService)invoke.getProxyBean();
         proxy.printText();
-
-
     }
 
 }

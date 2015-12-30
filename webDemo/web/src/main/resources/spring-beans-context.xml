@@ -13,4 +13,13 @@
         <beans:property name="sex" value="M"/>
     </beans:bean>
 
+    <beans:bean id="initTestBean" class="com.mystudy.web.common.InitSequenceBean"
+            init-method="initMethodByXml">
+        <beans:property name="testInitValue" value="aaaaa*****aaaa"/>
+    </beans:bean>
+    <beans:bean id="initTestBean_1" class="com.mystudy.web.common.InitSequenceBean"
+                init-method="initMethodByXml">
+        <beans:property name="testInitValue" value="initTestBean_1*****aaaa"/>
+    </beans:bean>
+
 </beans:beans>

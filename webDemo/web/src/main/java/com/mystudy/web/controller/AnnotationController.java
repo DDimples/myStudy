@@ -1,8 +1,10 @@
 package com.mystudy.web.controller;
 
+import com.mystudy.web.common.InitSequenceBean;
 import com.mystudy.web.model.Persion;
 import com.mystudy.web.service.impl.InitValueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +54,17 @@ public class AnnotationController {
         System.out.println(model.containsAttribute("persion"));
         return "model 魔豆";
     }
+
+
+    public void test(){
+        initSequenceBean.initMethodByXml();
+
+        System.out.println("test~"+initSequenceBean.getTestInitValue());
+    }
+
+    @Qualifier("initTestBean_1")
+    @Autowired
+    private InitSequenceBean initSequenceBean;
 
 
 }
