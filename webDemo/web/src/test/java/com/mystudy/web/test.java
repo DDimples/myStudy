@@ -1,6 +1,7 @@
 package com.mystudy.web;
 
 import com.mystudy.web.controller.AnnotationController;
+import com.mystudy.web.service.GoodsService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,6 +14,9 @@ public class Test {
     public static void main(String[] args){
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-mvc-context.xml");
         AnnotationController t = (AnnotationController) context.getBean("annotationController");
+
+        GoodsService service = (GoodsService)context.getBean("goodsService");
+
         t.test();
 
 

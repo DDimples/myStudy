@@ -48,7 +48,7 @@
         <logger name="TestLogger" level="debug">
             <appender-ref ref="test"/>
         </logger>
-        <Root level="debug">
+        <Root level="error">
             <AppenderRef ref="Console" />
         </Root>
     </Loggers>

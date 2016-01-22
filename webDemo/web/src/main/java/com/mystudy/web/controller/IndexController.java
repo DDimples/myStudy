@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mystudy.web.common.BaseController;
 import com.mystudy.web.common.log.LogUtil;
 import com.mystudy.web.controller.util.MultithreadUtil;
+import com.mystudy.web.model.Goods;
 import com.mystudy.web.service.GoodsService;
 import com.mystudy.web.service.TestService;
 import org.slf4j.Logger;
@@ -67,5 +68,88 @@ public class IndexController extends BaseController {
         return JSON.toJSONString(goodsService.selectAll());
     }
 
+    @RequestMapping(value = "/bf",produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Object testBf(){
+        ThreadPoolExecutor voidExecutor = new ThreadPoolExecutor(
+                10, 100, 4, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        TestWorker t1 = new TestWorker(goodsService);
+        TestWorker t2 = new TestWorker(goodsService);
+        TestWorker t3 = new TestWorker(goodsService);
+        TestWorker t4 = new TestWorker(goodsService);
+        TestWorker t5 = new TestWorker(goodsService);
+        for(int i=0;i<10;i++){
+            voidExecutor.execute(t1);
+            voidExecutor.execute(t2);
+            voidExecutor.execute(t3);
+            voidExecutor.execute(t4);
+            voidExecutor.execute(t5);
+        }
 
+        voidExecutor.shutdown();
+        return "success 1 测试并发";
+    }
+
+    @RequestMapping(value = "/bf2",produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Object testBf2(){
+        ThreadPoolExecutor voidExecutor = new ThreadPoolExecutor(
+                10, 100, 4, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        TestWorker2 t1 = new TestWorker2(goodsService);
+        TestWorker2 t2 = new TestWorker2(goodsService);
+        TestWorker2 t3 = new TestWorker2(goodsService);
+        TestWorker2 t4 = new TestWorker2(goodsService);
+        TestWorker2 t5 = new TestWorker2(goodsService);
+        for(int i=0;i<10;i++){
+            voidExecutor.execute(t1);
+            voidExecutor.execute(t2);
+            voidExecutor.execute(t3);
+            voidExecutor.execute(t4);
+            voidExecutor.execute(t5);
+        }
+
+//        t3.run();
+        voidExecutor.shutdown();
+        return "success 测试并发";
+    }
+
+    private class TestWorker implements Runnable{
+
+        private GoodsService service;
+
+        public TestWorker(GoodsService service){
+            this.service = service;
+        }
+
+        @Override
+        public void run() {
+            try {
+                service.updateGoods3();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+
+            }
+        }
+    }
+
+    private class TestWorker2 implements Runnable{
+
+        private GoodsService service;
+
+        public TestWorker2(GoodsService service){
+            this.service = service;
+        }
+
+        @Override
+        public void run() {
+            try {
+                service.updateGoods2();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+
+            }
+        }
+    }
 }

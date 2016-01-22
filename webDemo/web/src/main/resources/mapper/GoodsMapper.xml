@@ -25,5 +25,9 @@
         </foreach>
     </insert>
 
+    <update id="updateGoods" parameterType="com.mystudy.web.model.Goods">
+        UPDATE studyTest SET num = #{num},ts=CURRENT_TIMESTAMP WHERE id = #{id}
+    </update>
+
 
 </mapper>

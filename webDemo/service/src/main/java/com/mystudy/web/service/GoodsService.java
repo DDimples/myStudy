@@ -16,4 +16,13 @@ public interface GoodsService {
     Goods selectById(String id) throws Exception;
 
     int insertGoods(List<Goods> list) throws Exception;
+
+    @DataSource("readDataSource")
+    int updateGoods() throws Exception;
+
+    @DataSource("readDataSource")
+    int updateGoods2() throws Exception;
+
+    @DataSource("readDataSource")
+    int updateGoods3() throws Exception;
 }
