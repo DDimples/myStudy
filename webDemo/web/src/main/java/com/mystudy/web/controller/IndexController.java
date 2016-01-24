@@ -39,13 +39,17 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/")
     public ModelAndView index(){
         logger.debug("index ********");
-        return new ModelAndView("index.html");
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("test","测试~~~");
+        return mv;
     }
 
     @RequestMapping(value = "/index")
     public ModelAndView index2(){
         logger.debug("index2 ********");
-        return new ModelAndView("index.html");
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("test", "测试~~~");
+        return mv;
     }
 
     @RequestMapping(value = "/test",produces = "text/html; charset=utf-8")

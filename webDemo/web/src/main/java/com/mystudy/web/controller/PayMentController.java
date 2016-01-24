@@ -2,6 +2,8 @@ package com.mystudy.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mystudy.web.controller.util.DataValidator;
+import com.mystudy.web.model.Goods;
 import com.mystudy.web.model.OrderDetailEntity;
 import com.mystudy.web.model.PaymentDTO;
 import com.mystudy.web.model.RefundModel;
@@ -21,6 +23,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.DirectFieldBindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,6 +95,25 @@ public class PayMentController {
     @ResponseBody
     public Object testRaw(@RequestBody String body){
         System.out.println("say something~"+body);
+        return "success";
+    }
+
+    @RequestMapping(value = "/testValidator")
+    @ResponseBody
+    public Object testValidator(){
+        Goods goods = new Goods();
+        DirectFieldBindingResult fieldBindingResult =
+                new DirectFieldBindingResult(goods,Goods.class.getName());
+        ValidationUtils.invokeValidator(new DataValidator(),goods,fieldBindingResult);
+
+        if(fieldBindingResult.hasErrors()){
+            List<FieldError> errors = fieldBindingResult.getFieldErrors();
+            JSONObject json = new JSONObject();
+            for (FieldError error : errors) {
+                json.put(error.getField(), error.getCode());
+            }
+            return JSON.toJSONString(json);
+        }
         return "success";
     }
 
