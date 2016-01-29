@@ -36,19 +36,20 @@ public class IndexController extends BaseController {
     @Autowired
     private GoodsService goodsService;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/test2")
     public ModelAndView index(){
         logger.debug("index ********");
-        ModelAndView mv = new ModelAndView("index");
-        mv.addObject("test","测试~~~");
+        ModelAndView mv = new ModelAndView("test2");
+        mv.addObject("test","测试~~args~");
         return mv;
     }
 
     @RequestMapping(value = "/index")
     public ModelAndView index2(){
         logger.debug("index2 ********");
-        ModelAndView mv = new ModelAndView("index");
+        ModelAndView mv = new ModelAndView("test");
         mv.addObject("test", "测试~~~");
+        mv.addObject("title","测试title");
         return mv;
     }
 

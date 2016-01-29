@@ -14,12 +14,7 @@ import java.util.*;
 public class TestMain {
 
     public static void main(String[] args){
-        TestServiceImpl tt = new TestServiceImpl();
-        Object str = new String("aaa");
-        System.out.println(str instanceof String);
-        System.out.println(str instanceof TestServiceImpl);
-        System.out.println(TestServiceImpl.class.isAssignableFrom(TestService.class));
-        System.out.println(TestService.class.isAssignableFrom(TestServiceImpl.class));
+        System.out.println(7 ^ 4);
 
 //        String[] arr = {"3","30","34","5","9"};
 //        System.out.println(getBigestNum(arr));
