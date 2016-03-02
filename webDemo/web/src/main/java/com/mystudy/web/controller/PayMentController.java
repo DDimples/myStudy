@@ -56,7 +56,7 @@ public class PayMentController {
 //        HttpGet httpGet = new HttpGet("http://newpayment-api-qry.vip.elong.com:8082/payment/token.html?business_type=1026&merchant_id=190010023&out_trade_no=123456");
 
 
-        HttpPost httpPost = new HttpPost("http://newpayment-api-cc.vip.elong.com:8081/payment/refund.html");
+        HttpPost httpPost = new HttpPost("http://mhuodong.elong.com/WxCrowdfunding/payNotifyAction?orderId=5&check=A89116AD8DDB0E085EF36113CB91AFBB");
 //        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 //        nameValuePairs.add(new BasicNameValuePair("req",JSON.toJSONString(req)));
         String sign = "amt=1.00&business_type=1026&merchant_id=190010023&notify_url=http://mhuodong.elong.com/WxCrowdfunding/refundNotifyAction&order_id=1&sign_type=MD5&trade_no=5000018097&key=698F62387BC158359F9BDF409D821AEF";
@@ -73,7 +73,8 @@ public class PayMentController {
         String json = JSON.toJSONString(model);
 
         try {
-            StringEntity stringEntity = new StringEntity(json,"UTF-8");
+            String temp = "{\"notifyUrl\":\"http://mhuodong.elong.com/WxCrowdfunding/payNotifyAction?orderId=11&check=1199D258A1C9BDCE01EA0682D8D763E8\",\"callBackRequest\":{\"trade_no\":100000000050041343,\"pay_time\":\"2016-01-30 15:50:43\",\"result_status\":1,\"error_info\":\"\",\"sales_verify\":0,\"pay_type_info_list\":[{\"operator\":\"\",\"currency\":4601,\"trans_type\":3003,\"bank_name\":\"微信支付\",\"customer_service_amt\":0.0,\"pay_amt\":5.0}]},\"trade_no\":100000000050041343,\"pay_time\":\"2016-01-30 15:50:43\",\"result_status\":1,\"error_info\":\"\",\"sales_verify\":0,\"pay_type_info_list\":[{\"operator\":\"\",\"currency\":4601,\"trans_type\":3003,\"bank_name\":\"微信支付\",\"customer_service_amt\":0.0,\"pay_amt\":5.0}]}";
+            StringEntity stringEntity = new StringEntity(temp,"UTF-8");
             httpPost.setEntity(stringEntity);
             HttpResponse response = httpClient.execute(httpPost);
             if(HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {

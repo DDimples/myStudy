@@ -25,6 +25,11 @@
         </foreach>
     </insert>
 
+    <insert id="insert" parameterType="com.mystudy.web.model.Goods">
+        INSERT INTO studyTest(name,price,num,ts)
+        VALUES (#{name},#{price},#{num},CURRENT_TIMESTAMP)
+    </insert>
+
     <update id="updateGoods" parameterType="com.mystudy.web.model.Goods">
         UPDATE studyTest SET num = #{num},ts=CURRENT_TIMESTAMP WHERE id = #{id}
     </update>

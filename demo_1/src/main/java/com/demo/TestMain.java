@@ -14,7 +14,8 @@ import java.util.*;
 public class TestMain {
 
     public static void main(String[] args){
-        System.out.println(7 ^ 4);
+        System.out.println(new Date().getTime());
+        System.out.println(System.currentTimeMillis()/1000L);
 
 //        String[] arr = {"3","30","34","5","9"};
 //        System.out.println(getBigestNum(arr));

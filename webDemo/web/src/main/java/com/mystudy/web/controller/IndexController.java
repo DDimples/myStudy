@@ -10,12 +10,15 @@ import com.mystudy.web.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -53,18 +56,19 @@ public class IndexController extends BaseController {
         return mv;
     }
 
-    @RequestMapping(value = "/test",produces = "text/html; charset=utf-8")
+    @RequestMapping(value = "/test",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public Object index3(){
-        logger.debug("你好 ********");
-        testLogger.debug("你好~~~~*****");
-        String result = null;
+    public Object index3(String name){
+        Goods goods = new Goods();
+        goods.setNum(100.00);
+        goods.setName(name);
+        goods.setPrice(new BigDecimal(Math.random() * 100));
         try {
-            result = testService.testMethod("你好！");
+            goodsService.insert(goods);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            e.printStackTrace();
         }
-        return result;
+        return goods.toString();
     }
 
     @RequestMapping(value = "/database",produces = "application/json; charset=UTF-8")

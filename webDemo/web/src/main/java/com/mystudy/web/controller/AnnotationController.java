@@ -1,8 +1,19 @@
 package com.mystudy.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mystudy.web.common.InitSequenceBean;
+import com.mystudy.web.model.Goods;
 import com.mystudy.web.model.Persion;
 import com.mystudy.web.service.impl.InitValueService;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -12,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -24,7 +36,7 @@ public class AnnotationController {
     @Autowired
     private InitValueService initValueService;
 
-    @ModelAttribute
+//    @ModelAttribute
     public Persion addAttribute(@RequestParam(required = false) String arg){
         System.out.println("arg:"+arg);
         Persion persion = new Persion();
@@ -66,5 +78,39 @@ public class AnnotationController {
     @Autowired
     private InitSequenceBean initSequenceBean;
 
+
+    @RequestMapping(value = "/requestBodyTest",method = RequestMethod.POST)
+    @ResponseBody
+    public Object requestBodyTest(@RequestBody Goods goods){
+
+        return goods==null?"null":goods.toString();
+    }
+
+    @RequestMapping(value = "/atest")
+    @ResponseBody
+    public Object testBody(){
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://localhost:8080/requestBodyTest");
+        httpPost.setHeader("content-type", "application/json");
+        Goods goods = new Goods();
+        goods.setName("apple");
+        goods.setNum(100.00);
+        goods.setId("00122");
+        StringEntity stringEntity = new StringEntity(JSON.toJSONString(goods),"UTF-8");
+        httpPost.setEntity(stringEntity);
+        try {
+            HttpResponse response = httpClient.execute(httpPost);
+            if(HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+
+                    return EntityUtils.toString(entity, "UTF-8");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "null";
+    }
 
 }

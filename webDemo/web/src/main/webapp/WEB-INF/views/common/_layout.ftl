@@ -7,15 +7,23 @@
     <title>${title!""}</title>
     <link rel="icon" href="/resources/img/favicon.ico">
     <link href="/resources/static/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <@block name="css"></@block>
+    <style type="text/css">
+        body {
+            min-height: 2000px;
+            padding-top: 70px;
+        }
+
+    </style>
+<@block name="css"></@block>
 </head>
-<body>
+<body role="document">
 <#--========页头=========-->
 <!-- Static navbar -->
 <#include "/common/head.ftl"/>
 <@head></@head>
 <#--========MVC主展示页面========-->
 <@block name="main"></@block>
+
 <#--========MVC  end=======-->
 
 <@block name="js"></@block>

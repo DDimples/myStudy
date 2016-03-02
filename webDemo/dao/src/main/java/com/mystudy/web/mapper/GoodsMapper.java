@@ -20,4 +20,6 @@ public interface GoodsMapper {
 
     int updateGoods(Goods goods);
 
+    void insert(Goods obj);
+
 }

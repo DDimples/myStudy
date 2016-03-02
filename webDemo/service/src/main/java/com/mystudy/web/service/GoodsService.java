@@ -25,4 +25,7 @@ public interface GoodsService {
 
     @DataSource("readDataSource")
     int updateGoods3() throws Exception;
+
+    @DataSource("readDataSource")
+    void insert(Goods goods) throws Exception;
 }

@@ -132,4 +132,14 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                    <property name="supportedMediaTypes" value="application/json" />
+                </bean>
+            </list>
+        </property>
+    </bean>
 </beans>

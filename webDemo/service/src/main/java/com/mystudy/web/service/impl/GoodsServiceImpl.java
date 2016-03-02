@@ -37,6 +37,8 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsDao.insertGoods(list);
     }
 
+
+
     @Transactional(rollbackFor = Exception.class)
     public int updateGoods() throws Exception{
         System.out.println("开始："+Thread.currentThread().getId()+"service"+this);
@@ -100,5 +102,12 @@ public class GoodsServiceImpl implements GoodsService {
         }finally{
             System.out.println("结束：" + Thread.currentThread().getId() + "service" + this);
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void insert(Goods goods) throws Exception{
+
+        goodsDao.insert(goods);
+
     }
 }
