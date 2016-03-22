@@ -46,9 +46,9 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
             methodName = method.getBean().getClass().getSimpleName() + "."
                     + method.getMethod().getName();
         }
-        LogUtil.getCommonLogger().debug("方法执行时间："+ elapsedTime+"--方法名称："+methodName);
+//        LogUtil.getCommonLogger().debug("方法执行时间："+ elapsedTime+"--方法名称："+methodName);
 
-
+        System.out.println("方法执行时间："+ elapsedTime+"--方法名称："+methodName);
 
     }
 }

@@ -1,5 +1,7 @@
 package com.demo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.demo.proxy.TestService;
 import com.demo.proxy.impl.TestServiceImpl;
 
@@ -17,8 +19,9 @@ public class TestMain {
         System.out.println(new Date().getTime());
         System.out.println(System.currentTimeMillis()/1000L);
 
-//        String[] arr = {"3","30","34","5","9"};
-//        System.out.println(getBigestNum(arr));
+
+        String[] arr = new String[]{"3","30","34","5","9"};
+        System.out.println(arr[1]);
 
     }
 

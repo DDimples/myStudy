@@ -36,7 +36,7 @@ public class AnnotationController {
     @Autowired
     private InitValueService initValueService;
 
-//    @ModelAttribute
+    @ModelAttribute
     public Persion addAttribute(@RequestParam(required = false) String arg){
         System.out.println("arg:"+arg);
         Persion persion = new Persion();
@@ -60,11 +60,11 @@ public class AnnotationController {
     }
 
 
-    @RequestMapping(value = "/validTest",produces = "text/html;charset=utf-8")
+    @RequestMapping(value = "/validTest")
     @ResponseBody
-    public Object validArgs(Model model){
+    public Object validArgs(Model model,String t){
         System.out.println(model.containsAttribute("persion"));
-        return "model 魔豆";
+        return "model 魔豆"+t;
     }
 
 

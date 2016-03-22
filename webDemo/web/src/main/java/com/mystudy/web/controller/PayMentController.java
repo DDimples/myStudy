@@ -2,11 +2,14 @@ package com.mystudy.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mystudy.web.cache.CacheTool;
+import com.mystudy.web.common.util.StringUtil;
 import com.mystudy.web.controller.util.DataValidator;
 import com.mystudy.web.model.Goods;
 import com.mystudy.web.model.OrderDetailEntity;
 import com.mystudy.web.model.PaymentDTO;
 import com.mystudy.web.model.RefundModel;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.http.HttpEntity;
@@ -36,19 +39,62 @@ import sun.security.provider.MD5;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by 程祥 on 16/1/12.
  * Function：
  */
 @Controller
+@RequestMapping(value = "/pay")
 public class PayMentController {
 
-    @RequestMapping(value = "/payTest",produces = "text/html; charset=utf-8")
+//    private String cacheKey = "2016-03-22 cacheTest";
+
+    @RequestMapping(value = "/addCache")
+    @ResponseBody
+    public Object addCache(String obj,String cacheKey){
+        CacheTool.setObject("myStudy","test",cacheKey,obj);
+
+        String cacheVaule = (String)CacheTool.getObject("myStudy","test",cacheKey);
+        cacheVaule = obj;
+
+        if(StringUtil.isEmpty(cacheVaule)){
+            cacheVaule = "不存在缓存值~";
+        }
+        return cacheVaule;
+    }
+
+    @RequestMapping(value = "/getCache")
+    @ResponseBody
+    public Object getCache(String cacheKey){
+        Object cacheValue = CacheTool.getObject("myStudy", "test", cacheKey);
+        return cacheValue;
+    }
+
+    @RequestMapping(value = "/delCache")
+    @ResponseBody
+    public Object delCache(String obj,String cacheKey){
+        CacheTool.setObject("myStudy","test",cacheKey,null);
+        return "清除缓存";
+    }
+
+    @RequestMapping(value = "/showAllCacheKeys")
+    @ResponseBody
+    public Object showAllCaches(){
+        HashMap<String, List> caches = new HashMap<String,List>();
+        CacheManager manager = CacheManager.create();
+        String[] cacheNames = manager.getCacheNames();
+        for(String name : cacheNames) {
+            List<String> keys = new ArrayList<String>();
+            keys = manager.getCache(name).getKeys();
+            caches.put(name, keys);
+        }
+        return JSON.toJSONString(caches);
+    }
+
+
+    @RequestMapping(value = "/payTest")
     @ResponseBody
     public Object test(){
 
@@ -59,6 +105,7 @@ public class PayMentController {
         HttpPost httpPost = new HttpPost("http://mhuodong.elong.com/WxCrowdfunding/payNotifyAction?orderId=5&check=A89116AD8DDB0E085EF36113CB91AFBB");
 //        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 //        nameValuePairs.add(new BasicNameValuePair("req",JSON.toJSONString(req)));
+
         String sign = "amt=1.00&business_type=1026&merchant_id=190010023&notify_url=http://mhuodong.elong.com/WxCrowdfunding/refundNotifyAction&order_id=1&sign_type=MD5&trade_no=5000018097&key=698F62387BC158359F9BDF409D821AEF";
         String md5 = DigestUtils.md5Hex(sign);
         RefundModel model = new RefundModel();

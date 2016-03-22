@@ -14,7 +14,7 @@ tags: Spring
 
 ## @PostConstruct 和 @PreDestroy
 
-这两个注解的作用为：指定的方法的生命周期过程中需要执行的操作。
+这两个注解的作用为：指定的方法的生命周期过程中需要执行的操作。可以用来在启动容器或关闭容器时加载和销毁配置信息。
 
 * @PostConstruct作用和InitializingBean接口、xml中init-method相同，在容器初始化该bean的时候执行方法；顺序为Constructor > @PostConstruct > InitializingBean > init-method
 * @PreDestroy作用和DisposableBean接口、xml中的destroy-method相同，在容器关闭的时候执行该方法；

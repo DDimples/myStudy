@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+    <bean id="test" class="com.mystudy.web.cache.config.CacheItemConfig">
+        <property name="configKey" value="test" />
+        <property name="region" value="myStudy" />
+        <property name="cacheLevelList">
+            <list>
+                <bean class="com.mystudy.web.cache.config.CacheLevelConfig">
+                    <property name="cacheLevel" value="Level_1" />
+                    <property name="cacheExpire" value="AbsoluteTime" />
+                    <property name="expireTime" value="600" />
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+
+    <bean id="cacheconfig" class="com.mystudy.web.cache.config.CacheConfig" >
+        <property name="usingasync" value="true">
+        </property>
+        <property name="configList">
+            <list>
+                <ref bean="test"/>
+            </list>
+        </property>
+    </bean>
+</beans:beans>

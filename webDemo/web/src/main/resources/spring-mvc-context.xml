@@ -15,16 +15,22 @@
        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.mystudy.web.common.UTF8StringHttpMessageConverter"></bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <!-- 支持异步方法执行 -->
     <task:annotation-driven/>
 
-    <import resource="classpath:/spring-beans-context.xml"/>
-
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <!-- 启动扫描所有的Component -->
     <context:component-scan base-package="com.mystudy.web"/>
+
+    <import resource="classpath:/spring-beans-context.xml"/>
+    <import resource="classpath:/spring-cache-beans.xml"/>
+    <import resource="classpath:/spring-freamwork-context.xml"/>
 
     <!-- freemarker 相关 -->
     <bean id="freemarkerConfig" class="com.mystudy.web.common.mvc.view.ViewConfigurer">
@@ -51,9 +57,15 @@
         <property name="exposeSpringMacroHelpers" value="true"/>
     </bean>
 
-    <!--<mvc:interceptors>-->
-        <!--<bean class="com.mystudy.web.common.interceptor.WebContextInterceptor"/>-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+        <bean class="com.mystudy.web.common.interceptor.WebContextInterceptor"/>
+    </mvc:interceptors>
+
+    <!-- ehcache 配置加载-->
+    <bean id="ehcache"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/ehcache.xml"></property>
+    </bean>
 
     <!-- 配置数据源 start -->
     <!-- 公共的数据源配置 -->
@@ -132,6 +144,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!-- 转换requestbody -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
         <property name="messageConverters">

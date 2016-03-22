@@ -1,4 +1,4 @@
-package com.mystudy.web.common.datasource;
+package com.mystudy.web.common;
 
 
 import org.springframework.beans.factory.DisposableBean;

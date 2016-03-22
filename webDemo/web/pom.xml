@@ -11,16 +11,6 @@
     <packaging>war</packaging>
     <artifactId>web</artifactId>
 
-    <properties>
-        <java-version>1.7</java-version>
-        <org.springframework-version>4.2.3.RELEASE</org.springframework-version>
-        <org.springframework.security-version>3.2.0.RELEASE</org.springframework.security-version>
-        <org.aspectj-version>1.8.1</org.aspectj-version>
-        <org.slf4j-version>1.6.1</org.slf4j-version>
-        <log4j2-version>2.4.1</log4j2-version>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>com.mystudy.web</groupId>
@@ -35,6 +25,11 @@
         <dependency>
             <groupId>com.mystudy.web</groupId>
             <artifactId>model</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mystudy.web</groupId>
+            <artifactId>cache</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
@@ -193,6 +188,7 @@
         </dependency>
 
     </dependencies>
+
 
     <build>
         <!-- 此处是该模块打包出来的最终名字，不配置则是模块名+版本号+后缀-->
