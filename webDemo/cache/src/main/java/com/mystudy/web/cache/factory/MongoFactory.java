@@ -1,5 +1,6 @@
 package com.mystudy.web.cache.factory;
 
+import com.mongodb.MongoClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,17 +20,16 @@ public class MongoFactory implements FactoryBean<Mongo>, InitializingBean,
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (host != null) {
 			if (port == null) {
-				mongo = new Mongo(host);
+				mongo = new MongoClient(host);
 			} else {
-				mongo = new Mongo(host, port);
+				mongo = new MongoClient(host, port);
 			}
 		} else {
-			mongo = new Mongo();
+			mongo = new MongoClient();
 		}
 	}
 

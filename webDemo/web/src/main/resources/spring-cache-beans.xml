@@ -4,6 +4,7 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
     <bean id="test" class="com.mystudy.web.cache.config.CacheItemConfig">
         <property name="configKey" value="test" />
         <property name="region" value="myStudy" />

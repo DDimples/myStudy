@@ -2,8 +2,6 @@ package com.mystudy.web.cache.config;
 
 /**
  * used to compare whether two StringArray have same contents, ignore case
- * 
- * @author xiang.liu
  *
  */
 public final class CaseIgnoreStringArray {

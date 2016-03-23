@@ -8,22 +8,8 @@
     <link href="/resources/static/css/carousel.css" rel="stylesheet">
     <style type="text/css">
         body {
-            min-height: 2000px;
-            padding-top: 70px;
+            padding-top: 50px;
         }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-
-        @media (max-width: 980px) {
-            /* Enable use of floated navbar text */
-            .navbar-text.pull-right {
-                float: none;
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-        }
-
     </style>
 <@block name="css"></@block>
 </head>
@@ -104,14 +90,15 @@
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    <#--轮播向左向右的箭头-->
+    <#--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">-->
+        <#--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+        <#--<span class="sr-only">Previous</span>-->
+    <#--</a>-->
+    <#--<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">-->
+        <#--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+        <#--<span class="sr-only">Next</span>-->
+    <#--</a>-->
 </div>
 
 <div class="container marketing">
@@ -203,5 +190,10 @@
 <script src="/resources/static/jquery/jquery-1.12.0.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/resources/static/bootstrap-3.3.5/js/bootstrap.js"></script>
+<script type="application/javascript">
+    $('.carousel').carousel({
+        interval: 2000
+    })
+</script>
 </body>
 </html>
