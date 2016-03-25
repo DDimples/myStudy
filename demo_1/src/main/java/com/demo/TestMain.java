@@ -7,6 +7,8 @@ import com.demo.proxy.impl.TestServiceImpl;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -16,12 +18,17 @@ import java.util.*;
 public class TestMain {
 
     public static void main(String[] args){
-        System.out.println(new Date().getTime());
-        System.out.println(System.currentTimeMillis()/1000L);
+        String data_1 = "data[12][name]";
+        String p_str = "data\\[(\\w+)\\]\\[(\\w+)\\]";
+        Pattern pattern = Pattern.compile(p_str);
+        Matcher matcher = pattern.matcher(data_1);
+        if(matcher.matches()){
+            System.out.println(matcher.group(1));
+            System.out.println(matcher.group(2));
 
-
-        String[] arr = new String[]{"3","30","34","5","9"};
-        System.out.println(arr[1]);
+        }else {
+            System.out.println("NO MATCH");
+        }
 
     }
 

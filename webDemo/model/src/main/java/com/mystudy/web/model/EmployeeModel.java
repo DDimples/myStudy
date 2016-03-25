@@ -6,12 +6,13 @@ import java.io.Serializable;
  * Created by 程祥 on 16/3/23.
  * Function：
  */
-public class EmployeeModel implements Serializable{
+public class EmployeeModel implements Serializable,Comparable<EmployeeModel>{
 
     public EmployeeModel() {
     }
 
-    public EmployeeModel(String name, String position, String salary, String start_date, String office, String extn) {
+    public EmployeeModel(String id,String name, String position, String salary, String start_date, String office, String extn) {
+        this.id = id;
         this.name = name;
         this.position = position;
         this.salary = salary;
@@ -20,12 +21,21 @@ public class EmployeeModel implements Serializable{
         this.extn = extn;
     }
 
-    private String name;
-    private String position;
-    private String salary;
-    private String start_date;
-    private String office;
-    private String extn;
+    public String id;
+    public String name;
+    public String position;
+    public String salary;
+    public String start_date;
+    public String office;
+    public String extn;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -73,5 +83,18 @@ public class EmployeeModel implements Serializable{
 
     public void setExtn(String extn) {
         this.extn = extn;
+    }
+
+    public int compareTo(EmployeeModel o) {
+        return id.compareTo(o.id);
+    }
+
+    public void copyValue(EmployeeModel model){
+        this.name = model.name;
+        this.salary = model.salary;
+        this.extn = model.extn;
+        this.office = model.office;
+        this.start_date = model.start_date;
+        this.position = model.position;
     }
 }

@@ -8,12 +8,12 @@ import java.util.List;
  * Created by 程祥 on 16/3/23.
  * Function：
  */
-public class DataTableResponse {
+public class DataTableResponse<T> {
 
     private Integer draw;
     private Integer recordsTotal;
     private Integer recordsFiltered;
-    private List<EmployeeModel> data;
+    private List<T> data;
     private String error;
 
     public Integer getDraw() {
@@ -40,11 +40,11 @@ public class DataTableResponse {
         this.recordsFiltered = recordsFiltered;
     }
 
-    public List<EmployeeModel> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<EmployeeModel> data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 

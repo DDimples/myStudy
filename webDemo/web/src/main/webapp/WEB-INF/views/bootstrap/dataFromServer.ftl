@@ -5,8 +5,10 @@
     <title>${title!""}</title>
     <link rel="icon" href="/resources/img/favicon.ico">
     <link href="/resources/static/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/static/dataTables/1.10.11/dataTables.bootstrap.css" rel="stylesheet">
-
+    <link href="/resources/static/dataTables/DataTables-1.10.11/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/resources/static/dataTables/Buttons-1.1.2/css/buttons.bootstrap.css" rel="stylesheet">
+    <link href="/resources/static/dataTables/Select-1.1.2/css/select.bootstrap.css" rel="stylesheet">
+    <link href="/resources/static/dataTables/Editor-1.5.5/css/editor.bootstrap.css" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 70px;
@@ -95,26 +97,98 @@
 <script src="/resources/static/jquery/jquery-1.12.0.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/resources/static/bootstrap-3.3.5/js/bootstrap.js"></script>
-<script src="/resources/static/dataTables/1.10.11/jquery.dataTables.js"></script>
-<script src="/resources/static/dataTables/1.10.11/dataTables.bootstrap.js"></script>
+<script src="/resources/static/dataTables/DataTables-1.10.11/js/jquery.dataTables.js"></script>
+<script src="/resources/static/dataTables/DataTables-1.10.11/js/dataTables.bootstrap.js"></script>
+<script src="/resources/static/dataTables/Buttons-1.1.2/js/dataTables.buttons.js"></script>
+<script src="/resources/static/dataTables/Buttons-1.1.2/js/buttons.bootstrap.js"></script>
+<script src="/resources/static/dataTables/Select-1.1.2/js/dataTables.select.js"></script>
+<script src="/resources/static/dataTables/Editor-1.5.5/js/dataTables.editor.js"></script>
+<script src="/resources/static/dataTables/Editor-1.5.5/js/editor.bootstrap.js"></script>
 <script type="application/javascript">
+
     $(document).ready(function() {
-        $('#example').dataTable( {
-            "processing": true,
-            "searchable": false,
-            "serverSide": true,
-            "ajax": {
+
+        editor = new $.fn.dataTable.Editor( {
+            ajax: {
+                "url": "/bootstrap/updateTableData",
+                "type": "POST"
+            },
+            idSrc:  'id',
+            table: "#example",
+            fields: [ {
+                label: "姓名:",
+                name: "name"
+            }, {
+                label: "职位:",
+                name: "position"
+            }, {
+                label: "公司:",
+                name: "office"
+            }, {
+                label: "开始日期:",
+                name: "start_date",
+                type: 'datetime'
+            }, {
+                label: "薪水:",
+                name: "salary"
+            }
+            ]
+        } );
+
+        var table = $('#example').DataTable( {
+            processing: true,
+            searching: false,
+            serverSide: true,
+            ajax: {
                 "url": "/bootstrap/getTableData",
                 "type": "POST"
             },
-            "columns": [
+            "order": [[ 3, 'asc' ], [ 4, 'desc' ]],
+            "columnDefs": [
+                { "orderable": false, "targets": 0 }
+            ],
+            columns: [
                 { "data": "name" },
-                { "data": "position" },
-                { "data": "office" },
+                { "data": "position"},
+                { "data": "office","orderable":false },
                 { "data": "start_date" },
                 { "data": "salary" }
-            ]
+            ],
+            select: true,
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
         } );
+        // Display the buttons
+        new $.fn.dataTable.Buttons( table, [
+            { extend: "create", editor: editor },
+            { extend: "edit",   editor: editor },
+            { extend: "remove", editor: editor }
+        ] );
+
+        table.buttons().container()
+                .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
     } );
 </script>
 </body>
