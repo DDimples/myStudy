@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -152,7 +153,7 @@ public class PayMentController {
         Goods goods = new Goods();
         DirectFieldBindingResult fieldBindingResult =
                 new DirectFieldBindingResult(goods,Goods.class.getName());
-        ValidationUtils.invokeValidator(new DataValidator(),goods,fieldBindingResult);
+        ValidationUtils.invokeValidator(new DataValidator(), goods, fieldBindingResult);
 
         if(fieldBindingResult.hasErrors()){
             List<FieldError> errors = fieldBindingResult.getFieldErrors();
@@ -165,6 +166,23 @@ public class PayMentController {
         return "success";
     }
 
+    @RequestMapping(value = "/testValidator2")
+    @ResponseBody
+    public Object testValidator2(){
+        Map<String,String> params = new HashMap<>();
+        params.put("req","{modelData:{\"orderId\":\"190000000033095660\",\"orderStatus\":\"出票失败\",\"trainNO\":\"G12 北京-上海\",\"departureTime\":\"2016-02-04 10:20\",\"seatInfo\":\"二等座 D8、D9\",\"passenger\":\"小二黑、小三\",\"amount\":100,\"currency\":\"$\",\"refundMessage\":\"7个工作日内退回原支付账户。\",\"toCityName\":\"上海\",\"toCityPinyin\":\"beijing\",\"elongCardNo\":\"190000000033095660\",\"openId\":\"oE_FowL1XY7N543_qRkizkCjEi7M\"},\"vehicleType\":\"TRAIN_TICKET_FAIL\"}");
+        HttpPost post = postForm("http://192.168.9.19:8319/template/sendTemplateMessage",params);
+        post.setHeader("Content-Type","application/x-www-form-urlencoded");
+        HttpClient client = HttpClientBuilder.create().build();
+        try {
+            HttpResponse response = client.execute(post);
+            System.out.println(EntityUtils.toString(response.getEntity(), "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return "success";
+    }
 
 
     private HttpPost postForm(String url, Map<String, String> params){

@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.proxy.TestService;
 import com.demo.proxy.impl.TestServiceImpl;
+import com.demo.thread.CallableThread;
+import com.demo.thread.CountThread;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +21,24 @@ import java.util.regex.Pattern;
 public class TestMain {
 
     public static void main(String[] args){
+        BlockingQueue queue = new SynchronousQueue();
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 10, 1, TimeUnit.MINUTES, queue,new ThreadPoolExecutor.AbortPolicy());
+
+        try {
+            List<Future<String>> results =  executor.invokeAll(Arrays.asList(new CallableThread("1")));
+            for (Future<String> result : results) {
+                System.out.println(result.get());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        executor.shutdown();
+        System.out.println("over~");
+    }
+
+    public void testPattern(){
         String data_1 = "data[12][name]";
         String p_str = "data\\[(\\w+)\\]\\[(\\w+)\\]";
         Pattern pattern = Pattern.compile(p_str);
@@ -29,7 +50,6 @@ public class TestMain {
         }else {
             System.out.println("NO MATCH");
         }
-
     }
 
     public static String getBigestNum(String[] array) {

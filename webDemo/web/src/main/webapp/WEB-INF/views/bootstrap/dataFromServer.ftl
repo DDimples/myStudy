@@ -64,27 +64,36 @@
 
     </div>
 </nav>
+<div class="container bs-docs-container">
 
-<table id="example" class="table table-striped table-hover table-bordered col-md-9" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </tfoot>
-</table>
+    <div class="row">
+        <div class="col-md-9" role="main">
+            <table id="example" class="table table-striped table-hover table-bordered col-md-9" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>
 
 
 <@block name="main"></@block>
@@ -115,6 +124,41 @@
             },
             idSrc:  'id',
             table: "#example",
+            i18n: {
+                create: {
+                    button: "新增",
+                    title:  "新增",
+                    submit: "提交"
+                },
+                edit: {
+                    button: "修改",
+                    title:  "修改",
+                    submit: "提交"
+                },
+                remove: {
+                    button: "删除",
+                    title:  "删除",
+                    submit: "确认",
+                    confirm: {
+                        _: "确认要删除 %d 行?",
+                        1: "您确认要删除 1 行?"
+                    }
+                },
+                error: {
+                    system: "Une erreur s’est produite, contacter l’administrateur système"
+                },
+                multi: {
+                    title: "确认",
+                    info: "multi????",
+                    restore: "Annuler les modifications"
+                },
+                datetime: {
+                    previous: 'pre',
+                    next:     'next',
+                    months:   [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                    weekdays: [ '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' ]
+                }
+            },
             fields: [ {
                 label: "姓名:",
                 name: "name"
@@ -133,6 +177,7 @@
                 name: "salary"
             }
             ]
+
         } );
 
         var table = $('#example').DataTable( {
@@ -183,7 +228,7 @@
         // Display the buttons
         new $.fn.dataTable.Buttons( table, [
             { extend: "create", editor: editor },
-            { extend: "edit",   editor: editor },
+            { extend: "edit", editor: editor },
             { extend: "remove", editor: editor }
         ] );
 

@@ -138,7 +138,7 @@ public class EhCacheTool {
 		CacheManager cacheManager = ehCacheProvider.manager;
 		String[] cacheNames = cacheManager.getCacheNames();
 		if (cacheNames != null && cacheNames.length > 0) {
-			Set<String> res = new HashSet<>();
+			Set<String> res = new HashSet<String>();
 			for (String cacheName : cacheNames) {
 				Cache cache = cacheManager.getCache(cacheName);
 				if (cache == null) {

@@ -19,7 +19,7 @@
 <body role="document">
 <#--========页头=========-->
 <!-- Static navbar -->
-<#include "/common/head.ftl"/>
+<#include "head.ftl"/>
 <@head></@head>
 <#--========MVC主展示页面========-->
 <@block name="main"></@block>
