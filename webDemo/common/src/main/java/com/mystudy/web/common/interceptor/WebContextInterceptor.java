@@ -7,6 +7,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by 程祥 on 15/11/27.
@@ -14,10 +15,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class WebContextInterceptor extends HandlerInterceptorAdapter {
 
+    ThreadLocal<Long> current = new ThreadLocal<Long>();
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        request.setAttribute("startTime",System.currentTimeMillis());
 
+        current.set(System.currentTimeMillis());
+        request.setAttribute("startTime",System.currentTimeMillis());
+//        HttpSession session = request.getSession();
+//        session.setAttribute("startTime_session",System.currentTimeMillis());
         return super.preHandle(request, response, handler);
     }
 
@@ -50,5 +56,6 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
 
         System.out.println("方法执行时间："+ elapsedTime+"--方法名称："+methodName);
 
+        System.out.println("方法执行时间："+ (System.currentTimeMillis()-current.get())+"--方法名称："+methodName);
     }
 }

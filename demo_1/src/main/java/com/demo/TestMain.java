@@ -8,6 +8,7 @@ import com.demo.thread.CallableThread;
 import com.demo.thread.CountThread;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
@@ -21,19 +22,82 @@ import java.util.regex.Pattern;
 public class TestMain {
 
     public static void main(String[] args){
+
+        int port = 8080;
+        if (args != null && args.length > 0) {
+            try {
+                port = Integer.valueOf(args[0]);
+            } catch (NumberFormatException e) {
+                // 采用默认值
+            }
+        }
+        Socket socket = null;
+        BufferedReader in = null;
+        PrintWriter out = null;
+        try {
+            socket = new Socket("127.0.0.1", port);
+            in = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("QUERY TIME ORDER");
+            System.out.println("Send order 2 server succeed.");
+            String resp = in.readLine();
+            System.out.println("Now is : " + resp);
+        } catch (Exception e) {
+            //不需要处理
+        } finally {
+            if (out != null) {
+                out.close();
+                out = null;
+            }
+
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                in = null;
+            }
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                socket = null;
+            }
+        }
+
+    }
+
+    public void testThreadPool(){
         BlockingQueue queue = new SynchronousQueue();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 10, 1, TimeUnit.MINUTES, queue,new ThreadPoolExecutor.AbortPolicy());
 
         try {
-            List<Future<String>> results =  executor.invokeAll(Arrays.asList(new CallableThread("1")));
-            for (Future<String> result : results) {
-                System.out.println(result.get());
+//            List<Future<String>> results =  executor.invokeAll(Arrays.asList(new CallableThread("1"),new CallableThread("2"),new CallableThread("3"),new CallableThread("4")));
+//            for (Future<String> result : results) {
+//                System.out.println(result.get());
+//            }
+            for (int i = 0; i < 13; i++) {
+
+                executor.execute(new Runnable() {
+
+                    public void run() {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println(String.format("thread %d finished",Thread.currentThread().getId()));
+                    }
+                });
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         executor.shutdown();
         System.out.println("over~");
     }
