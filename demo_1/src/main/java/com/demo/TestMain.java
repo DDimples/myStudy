@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.proxy.TestService;
 import com.demo.proxy.impl.TestServiceImpl;
+import com.demo.temp.IdGenerator;
+import com.demo.temp.SimpleClone;
 import com.demo.thread.CallableThread;
 import com.demo.thread.CountThread;
 
@@ -22,53 +24,40 @@ import java.util.regex.Pattern;
 public class TestMain {
 
     public static void main(String[] args){
-
-        int port = 8080;
-        if (args != null && args.length > 0) {
-            try {
-                port = Integer.valueOf(args[0]);
-            } catch (NumberFormatException e) {
-                // 采用默认值
-            }
-        }
-        Socket socket = null;
-        BufferedReader in = null;
-        PrintWriter out = null;
+        ThreadPoolExecutor poolExecutor =
+                new ThreadPoolExecutor(10,20,1,TimeUnit.MINUTES,new LinkedBlockingQueue(),new ThreadPoolExecutor.CallerRunsPolicy());
+        final IdGenerator generator = new IdGenerator();
         try {
-            socket = new Socket("127.0.0.1", port);
-            in = new BufferedReader(new InputStreamReader(
-                    socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-            out.println("QUERY TIME ORDER");
-            System.out.println("Send order 2 server succeed.");
-            String resp = in.readLine();
-            System.out.println("Now is : " + resp);
+            for(int i=0;i<100;i++){
+                final int temp =i;
+                poolExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("i的值为："+temp+"~~"+generator.generateId());
+                    }
+                });
+            }
         } catch (Exception e) {
-            //不需要处理
-        } finally {
-            if (out != null) {
-                out.close();
-                out = null;
-            }
-
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                in = null;
-            }
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                socket = null;
-            }
+            e.printStackTrace();
+        }finally {
+            poolExecutor.shutdown();
+            System.out.println("over~");
         }
 
+    }
+
+    public void testClone(){
+        SimpleClone obj = new SimpleClone();
+//        obj.wait();
+        obj.setName("test_clone");
+        System.out.println("obj:" + obj.toString());
+        System.out.println("obj_hotelModel:"+obj.getHotelModel().toString());
+        SimpleClone clone_obj = (SimpleClone) obj.clone();
+        System.out.println("clone_obj:"+clone_obj.toString());
+        System.out.println("getHotelModel 是否相同"+(obj.getHotelModel()==clone_obj.getHotelModel()));
+        clone_obj.setName("cloneObj_str");
+        obj.setName("obj_str");
+        System.out.println(clone_obj.getName());
     }
 
     public void testThreadPool(){

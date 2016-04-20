@@ -2,6 +2,7 @@ package com.mystudy.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.mystudy.web.common.InitSequenceBean;
 import com.mystudy.web.model.Goods;
 import com.mystudy.web.model.Persion;
@@ -111,6 +112,23 @@ public class AnnotationController {
             e.printStackTrace();
         }
         return "null";
+    }
+
+
+
+    @RequestMapping(value = "/jsonpTest")
+    @ResponseBody
+    public Object jsonpTest(HttpServletRequest request){
+        try {
+
+            String callBack = request.getParameter("jsonpCallback");
+            //TODO 添加对象
+            return callBack+"("+JSON.toJSONString(new Object())+")";
+//            return new JSONPObject("callback", "test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new JSONPObject("callbackTest","重启失败~");
     }
 
 }
