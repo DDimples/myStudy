@@ -3,6 +3,8 @@ package com.mystudy.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mystudy.web.cache.CacheTool;
+import com.mystudy.web.common.util.HttpClientUtils;
+import com.mystudy.web.common.util.HttpUtil;
 import com.mystudy.web.common.util.StringUtil;
 import com.mystudy.web.controller.util.DataValidator;
 import com.mystudy.web.model.Goods;
@@ -27,6 +29,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.validation.DirectFieldBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ValidationUtils;
@@ -143,7 +146,7 @@ public class PayMentController {
     @RequestMapping(value = "/testRaw",method = RequestMethod.POST)
     @ResponseBody
     public Object testRaw(@RequestBody String body){
-        System.out.println("say something~"+body);
+        System.out.println("say something~" + body);
         return "success";
     }
 
@@ -172,7 +175,7 @@ public class PayMentController {
         Map<String,String> params = new HashMap<>();
         params.put("req","{modelData:{\"orderId\":\"190000000033095660\",\"orderStatus\":\"出票失败\",\"trainNO\":\"G12 北京-上海\",\"departureTime\":\"2016-02-04 10:20\",\"seatInfo\":\"二等座 D8、D9\",\"passenger\":\"小二黑、小三\",\"amount\":100,\"currency\":\"$\",\"refundMessage\":\"7个工作日内退回原支付账户。\",\"toCityName\":\"上海\",\"toCityPinyin\":\"beijing\",\"elongCardNo\":\"190000000033095660\",\"openId\":\"oE_FowL1XY7N543_qRkizkCjEi7M\"},\"vehicleType\":\"TRAIN_TICKET_FAIL\"}");
         HttpPost post = postForm("http://192.168.9.19:8319/template/sendTemplateMessage",params);
-        post.setHeader("Content-Type","application/x-www-form-urlencoded");
+        post.setHeader("Content-Type", "application/x-www-form-urlencoded");
         HttpClient client = HttpClientBuilder.create().build();
         try {
             HttpResponse response = client.execute(post);
@@ -183,6 +186,73 @@ public class PayMentController {
         }
         return "success";
     }
+
+    private String url ="http://192.168.9.19:8318/elong/weixinmp/msg/getAccessTokenForApi";
+
+    @RequestMapping(value = "/testHttpClientPool")
+    @ResponseBody
+    public Object testHttpClientPool(){
+        StopWatch sw = new StopWatch();
+        sw.start();
+        HttpClientUtils utils = new HttpClientUtils();
+        for (int i=0;i<20;i++){
+            HttpClientUtils.HttpResult result = utils.get(url, "");
+            System.out.println(i+"次请求结果为：-- "+result.getStatusCode());
+        }
+        sw.stop();
+
+        return sw.getLastTaskTimeMillis();
+    }
+
+    @RequestMapping(value = "/testHttpClientPool2")
+    @ResponseBody
+    public Object testHttpClientPool2(){
+
+        StopWatch sw = new StopWatch();
+        sw.start();
+
+        HttpUtil utils = new HttpUtil();
+        for (int i=0;i<20;i++){
+//            HttpGet httpGet = new HttpGet(url);
+            HttpResponse result = null;
+            try {
+                result = utils.get(url);
+                EntityUtils.consume(result.getEntity());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(i+"次请求结果为：-- "+(result.getStatusLine()==null?"error":result.getStatusLine().getStatusCode()));
+        }
+        sw.stop();
+
+        return sw.getLastTaskTimeMillis();
+    }
+
+    @RequestMapping(value = "/testHttpClientPool3")
+    @ResponseBody
+    public Object testHttpClientPool3(){
+
+        StopWatch sw = new StopWatch();
+        sw.start();
+        HttpClient utils = HttpClientBuilder.create().build();
+        for (int i=0;i<20;i++){
+            HttpGet httpGet = new HttpGet(url);
+
+            HttpResponse result = null;
+            try {
+                result = utils.execute(httpGet);
+                EntityUtils.consume(result.getEntity());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(i+"次请求结果为：-- "+(result.getStatusLine()==null?"error":result.getStatusLine().getStatusCode()));
+        }
+        sw.stop();
+
+        return sw.getLastTaskTimeMillis();
+    }
+
+
 
 
     private HttpPost postForm(String url, Map<String, String> params){
