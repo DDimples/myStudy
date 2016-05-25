@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class EmployeeModel implements Serializable,Comparable<EmployeeModel>{
 
+
+
     public EmployeeModel() {
     }
 
@@ -21,6 +23,7 @@ public class EmployeeModel implements Serializable,Comparable<EmployeeModel>{
         this.extn = extn;
     }
 
+//    @NoT
     public String id;
     public String name;
     public String position;

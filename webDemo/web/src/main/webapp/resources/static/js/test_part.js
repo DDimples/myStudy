@@ -1,0 +1,9 @@
+require.config({
+    baseUrl:'/resources/static/jquery',
+    paths:{
+        "jquery":"/resources/static/jquery/jquery-1.12.0"
+    }
+});
+require(['jquery'],function($){
+    alert($().jquery);
+});

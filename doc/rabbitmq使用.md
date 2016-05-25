@@ -32,4 +32,8 @@ abbitmq-plugins enable rabbitmq_management
 
 [介绍界面](http://www.rabbitmq.com/management.html)
 
+rabbitMq exchange type :direct, topic, headers and fanout;
+
+
+
 

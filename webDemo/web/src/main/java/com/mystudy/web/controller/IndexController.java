@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,12 @@ public class IndexController extends BaseController {
     private final Logger logger = LogUtil.getCommonLogger();
     private  final Logger testLogger = LogUtil.getTestLogger();
 
+
+    @Autowired
+    private HttpServletRequest request;
+    public HttpServletRequest getRequest() {
+        return request;
+    }
     @Autowired
     private TestService testService;
 
@@ -41,14 +49,20 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "/test2")
     public ModelAndView index(){
+
+        HttpSession session = request.getSession();
+        System.out.println("index:"+session.getId());
+
         logger.debug("index ********");
-        ModelAndView mv = new ModelAndView("test2");
+        ModelAndView mv = new ModelAndView("require_test");
         mv.addObject("test","测试~~args~");
         return mv;
     }
 
     @RequestMapping(value = "/index")
     public ModelAndView index2(){
+        HttpSession session = request.getSession();
+        System.out.println("index2:"+session.getId());
         logger.debug("index2 ********");
         ModelAndView mv = new ModelAndView("test");
         mv.addObject("test", "测试~~~");

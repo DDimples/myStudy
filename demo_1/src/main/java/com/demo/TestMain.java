@@ -24,6 +24,13 @@ import java.util.regex.Pattern;
 public class TestMain {
 
     public static void main(String[] args){
+        IoModel model = new IoModel();
+        IoModel model1 = new IoModel();
+        System.out.println(model.equals(model1));
+
+    }
+
+    public void testThread(){
         ThreadPoolExecutor poolExecutor =
                 new ThreadPoolExecutor(10,20,1,TimeUnit.MINUTES,new LinkedBlockingQueue(),new ThreadPoolExecutor.CallerRunsPolicy());
         final IdGenerator generator = new IdGenerator();
@@ -43,7 +50,6 @@ public class TestMain {
             poolExecutor.shutdown();
             System.out.println("over~");
         }
-
     }
 
     public void testClone(){

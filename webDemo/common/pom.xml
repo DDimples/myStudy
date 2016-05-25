@@ -97,6 +97,27 @@
             <artifactId>httpclient</artifactId>
             <version>4.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.5.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.elong</groupId>
+            <artifactId>JMSG-Client</artifactId>
+            <version>1.8.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.elong.hotel</groupId>
+            <artifactId>JAMQP</artifactId>
+            <version>1.7.0</version>
+        </dependency>
     </dependencies>
 
 </project>

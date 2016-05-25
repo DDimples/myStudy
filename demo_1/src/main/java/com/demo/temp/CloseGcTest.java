@@ -17,12 +17,13 @@ public class CloseGcTest implements AutoCloseable{
 
 
     public static void main(String[] args){
-        CloseGcTest temp =new CloseGcTest();
-        try {
-            temp = null;
-            Thread.sleep(10000);
-        }catch (Exception e){
-            System.out.println("exception");
+        //当把实现了AutoCloseable 的声明放在try中时，在try执行完前，对象的close方法会被调用
+        try(CloseGcTest temp =new CloseGcTest()) {
+
+//            temp = null;
+//            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
