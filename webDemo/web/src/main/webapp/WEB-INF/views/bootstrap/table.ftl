@@ -5,7 +5,7 @@
     <title>${title!""}</title>
     <link rel="icon" href="/resources/img/favicon.ico">
     <link href="/resources/static/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/static/dataTables/1.10.11/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/resources/static/dataTables/DataTables-1.10.11/css/dataTables.bootstrap.css" rel="stylesheet">
 
     <style type="text/css">
         body {
@@ -673,8 +673,8 @@
 <script src="/resources/static/jquery/jquery-1.12.0.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/resources/static/bootstrap-3.3.5/js/bootstrap.js"></script>
-<script src="/resources/static/dataTables/1.10.11/jquery.dataTables.js"></script>
-<script src="/resources/static/dataTables/1.10.11/dataTables.bootstrap.js"></script>
+<script src="/resources/static/dataTables/DataTables-1.10.11/js/jquery.dataTables.js"></script>
+<script src="/resources/static/dataTables/DataTables-1.10.11/js/dataTables.bootstrap.js"></script>
 <script type="application/javascript">
     $(document).ready(function() {
         $('#example').DataTable();
